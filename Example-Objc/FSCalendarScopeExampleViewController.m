@@ -24,13 +24,22 @@
     
     // Uncomment this to perform an 'initial-week-scope'
 //    _calendar.scope = FSCalendarScopeWeek;
+    
+    [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void)dealloc
 {
     NSLog(@"%s",__FUNCTION__);
+    
+    [self.calendar removeObserver:self forKeyPath:@"scope"];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    FSCalendarScope scope = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+    NSLog(@"Scope is %@", scope == FSCalendarScopeMonth ? @"Month" : @"Week");
+}
 
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {

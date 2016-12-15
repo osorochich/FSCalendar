@@ -125,7 +125,7 @@
     
     if (self.transition == FSCalendarTransitionWeekToMonth) {
         
-        self.calendarScope = FSCalendarScopeMonth;
+        [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeMonth forKey:@"_scope"];
         self.calendarCurrentPage = self.pendingAttributes.targetPage;
         
         [self prelayoutForWeekToMonthTransition];
@@ -644,7 +644,7 @@ self.calendar.daysContainer.fs_height = CGRectGetHeight(targetBounds)-self.calen
         case FSCalendarTransitionWeekToMonth: {
             [self performAlphaAnimationFrom:progress to:0 duration:0.3 exception:self.pendingAttributes.focusedRowNumber completion:^{
                 
-                self.calendarScope = FSCalendarScopeWeek;
+                [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeWeek forKey:@"_scope"];
                 self.calendarCurrentPage = self.pendingAttributes.sourcePage;
                 
                 [self performTransitionCompletion:FSCalendarTransitionMonthToWeek animated:YES];
