@@ -1595,19 +1595,19 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.dateIsToday = self.today?[self.gregorian isDate:date inSameDayAsDate:self.today]:NO;
     cell.weekend = [self.gregorian isDateInWeekend:date];
     cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+    
+    cell.placeholder = (cell.monthPosition == FSCalendarMonthPositionPrevious || cell.monthPosition == FSCalendarMonthPositionNext) || ![self isDateInRange:date] || (self.usePreviousDatesAsPlaceholders && [self.gregorian compareDate:date toDate:[NSDate date] toUnitGranularity:NSCalendarUnitDay] == NSOrderedAscending);
+    
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            cell.placeholder = (cell.monthPosition == FSCalendarMonthPositionPrevious || cell.monthPosition == FSCalendarMonthPositionNext) || ![self isDateInRange:date];
             if (cell.placeholder) {
                 cell.selected &= _pagingEnabled;
                 cell.dateIsToday &= _pagingEnabled;
             }
             break;
         }
-        case FSCalendarScopeWeek: {
-            cell.placeholder = ![self isDateInRange:date];
+        default:
             break;
-        }
     }
     [self invalidateAppearanceForCell:cell forDate:date];
     if (cell.selected) {

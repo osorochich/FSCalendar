@@ -420,6 +420,11 @@ IB_DESIGNABLE
 @property (readonly, nonatomic) NSDate *selectedDate;
 
 /**
+ A Boolean value that determines whether previous dates should be used as placeholders. Default is NO;
+*/
+@property (assign, nonatomic) IBInspectable BOOL usePreviousDatesAsPlaceholders;
+
+/**
  The dates representing the selected dates. (read-only)
  */
 @property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;
