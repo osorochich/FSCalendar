@@ -189,6 +189,7 @@
     [super prepareForReuse];
     [CATransaction setDisableActions:YES];
     _shapeLayer.opacity = 0;
+    self.contentView.hidden = NO;
     [self.contentView.layer removeAnimationForKey:@"opacity"];
 }
 
