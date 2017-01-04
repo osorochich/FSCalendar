@@ -83,7 +83,13 @@
     
     void(^configureLabel)(UILabel *, NSInteger index) = ^(UILabel *label, NSInteger index) {
         label.font = self.calendar.appearance.weekdayFont;
-        label.textColor = self.calendar.appearance.weekdayTextColor;
+        
+        if (index == 0 || index == 6) {
+            label.textColor = self.calendar.appearance.weekdayWeekendTextColor ?: self.calendar.appearance.weekdayTextColor;
+        } else {
+            label.textColor = self.calendar.appearance.weekdayTextColor;
+        }
+        
         index += self.calendar.firstWeekday-1;
         index %= 7;
         label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
