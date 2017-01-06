@@ -56,7 +56,7 @@
         }
         self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
         switch (self.calendar.scope) {
-                
+            case FSCalendarScopeWeek:
             case FSCalendarScopeMonth: {
                 
                 CGFloat columnWidth = self.collectionView.fs_width/7.0-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1;
@@ -64,14 +64,6 @@
                 self.itemSize = itemSize;
                 
                 break;
-            }
-            case FSCalendarScopeWeek: {
-                
-                CGSize itemSize = CGSizeMake(self.collectionView.fs_width/7.0, rowHeight);
-                self.itemSize = itemSize;
-                
-                break;
-                
             }
                 
         }
