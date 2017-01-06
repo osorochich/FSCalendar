@@ -572,7 +572,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self selectCounterpartDate:selectedDate];
     
     if (self.scope == FSCalendarScopeWeek) {
-        [_calendarHeaderView setScrollOffset:[self correctScrollOffsetInWeekModeForDate:self.selectedDate]
+        NSInteger scrollOffset = [self.calculator indexPathForDate:selectedDate
+                                                   atMonthPosition:FSCalendarMonthPositionCurrent].section;
+        [_calendarHeaderView setScrollOffset:[self correctScrollOffsetInWeekModeForDate:self.selectedDate withInitialOffset:scrollOffset]
                                     animated:YES];
     }
 }
@@ -668,6 +670,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 scrollOffset = scrollView.contentOffset.y/scrollView.fs_height;
                 break;
             }
+        }
+        
+        if (self.scope == FSCalendarScopeWeek) {
+            scrollOffset = [self correctScrollOffsetInWeekModeForDate:self.selectedDate withInitialOffset:scrollOffset];
         }
         _calendarHeaderView.scrollOffset = scrollOffset;
     }
@@ -1324,15 +1330,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     if (_calendarHeaderView && !animated) {
         if (self.scope == FSCalendarScopeWeek) {
-            scrollOffset = [self correctScrollOffsetInWeekModeForDate:self.selectedDate];
+            scrollOffset = [self correctScrollOffsetInWeekModeForDate:self.selectedDate withInitialOffset:scrollOffset];
         }
         _calendarHeaderView.scrollOffset = scrollOffset;
     }
     _supressEvent = NO;
 }
 
-- (CGFloat)correctScrollOffsetInWeekModeForDate:(NSDate *)date {
-    NSInteger scrollOffset = [self.calculator indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent].section;
+- (CGFloat)correctScrollOffsetInWeekModeForDate:(NSDate *)date withInitialOffset:(CGFloat)scrollOffset {
     NSIndexPath *selectedIndexPath = [self.calculator indexPathForDate:self.selectedDate];
     
     FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:selectedIndexPath];
