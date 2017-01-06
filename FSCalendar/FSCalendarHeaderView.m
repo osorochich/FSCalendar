@@ -209,6 +209,11 @@
     }
 }
 
+- (void)setScrollOffset:(CGFloat)scrollOffset animated:(BOOL)animated {
+    CGFloat step = self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1);
+    [_collectionView setContentOffset:CGPointMake((scrollOffset+0.5)*step, 0) animated:animated];
+}
+
 - (void)scrollToOffset:(CGFloat)scrollOffset
 {
 #if TARGET_INTERFACE_BUILDER

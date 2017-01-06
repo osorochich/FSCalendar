@@ -570,6 +570,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self.delegateProxy calendar:self didSelectDate:selectedDate atMonthPosition:monthPosition];
     }
     [self selectCounterpartDate:selectedDate];
+    
+    if (self.scope == FSCalendarScopeWeek) {
+        NSInteger scrollOffset = [self.calculator indexPathForDate:selectedDate
+                                                   atMonthPosition:FSCalendarMonthPositionCurrent].section;
+        [_calendarHeaderView setScrollOffset:[self correctScrollOffsetInWeekModeForDate:self.selectedDate withInitialOffset:scrollOffset]
+                                    animated:YES];
+    }
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -663,6 +670,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 scrollOffset = scrollView.contentOffset.y/scrollView.fs_height;
                 break;
             }
+        }
+        
+        if (self.scope == FSCalendarScopeWeek) {
+            scrollOffset = [self correctScrollOffsetInWeekModeForDate:self.selectedDate withInitialOffset:scrollOffset];
         }
         _calendarHeaderView.scrollOffset = scrollOffset;
     }
@@ -1286,6 +1297,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _supressEvent = !animated;
     
     date = [self.calculator safeDateForDate:date];
+    
     NSInteger scrollOffset = [self.calculator indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent].section;
     
     if (!self.floatingMode) {
@@ -1317,9 +1329,23 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     
     if (_calendarHeaderView && !animated) {
+        if (self.scope == FSCalendarScopeWeek) {
+            scrollOffset = [self correctScrollOffsetInWeekModeForDate:self.selectedDate withInitialOffset:scrollOffset];
+        }
         _calendarHeaderView.scrollOffset = scrollOffset;
     }
     _supressEvent = NO;
+}
+
+- (CGFloat)correctScrollOffsetInWeekModeForDate:(NSDate *)date withInitialOffset:(CGFloat)scrollOffset {
+    NSIndexPath *selectedIndexPath = [self.calculator indexPathForDate:self.selectedDate];
+    
+    FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:selectedIndexPath];
+    if ((monthPosition == FSCalendarMonthPositionPrevious ||
+         monthPosition == FSCalendarMonthPositionNext)) {
+        scrollOffset = (monthPosition == FSCalendarMonthPositionNext) ? (scrollOffset + 1) : (scrollOffset - 1);
+    }
+    return scrollOffset;
 }
 
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated

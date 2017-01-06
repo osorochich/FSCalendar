@@ -26,6 +26,7 @@
 
 - (void)reloadData;
 - (void)configureAppearance;
+- (void)setScrollOffset:(CGFloat)scrollOffset animated:(BOOL)animated;
 
 @end
 
