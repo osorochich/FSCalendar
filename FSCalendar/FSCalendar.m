@@ -1596,7 +1596,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.weekend = [self.gregorian isDateInWeekend:date];
     cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
     
-    cell.placeholder = (cell.monthPosition == FSCalendarMonthPositionPrevious || cell.monthPosition == FSCalendarMonthPositionNext) || ![self isDateInRange:date] || (self.usePreviousDatesAsPlaceholders && [self.gregorian compareDate:date toDate:[NSDate date] toUnitGranularity:NSCalendarUnitDay] == NSOrderedAscending);
+    cell.dateIsInPast = (self.usePreviousDatesAsPlaceholders && [self.gregorian compareDate:date toDate:[NSDate date] toUnitGranularity:NSCalendarUnitDay] == NSOrderedAscending);
+    cell.placeholder = (cell.monthPosition == FSCalendarMonthPositionPrevious || cell.monthPosition == FSCalendarMonthPositionNext) || ![self isDateInRange:date] || cell.dateIsInPast;
     
     switch (_scope) {
         case FSCalendarScopeMonth: {
