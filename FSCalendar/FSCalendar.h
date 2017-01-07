@@ -430,6 +430,18 @@ IB_DESIGNABLE
 @property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;
 
 /**
+ Set the flag to use customRowHeight property.
+ */
+@property (assign, nonatomic) IBInspectable BOOL enableCustomRowHeight;
+
+/**
+    If enableCustomRowHeight is set to YES, the value will be used for rowHeight.
+ */
+@property (assign, nonatomic) IBInspectable CGFloat customRowHeight;
+
+
+
+/**
  Reload the dates and appearance of the calendar.
  */
 - (void)reloadData;

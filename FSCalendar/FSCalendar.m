@@ -202,6 +202,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
     _preferredPadding       = FSCalendarAutomaticDimension;
+    _customRowHeight        = FSCalendarAutomaticDimension;
     _lineHeightMultiplier    = 1.0;
     
     _scrollDirection = FSCalendarScrollDirectionHorizontal;
@@ -1032,6 +1033,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (CGFloat)preferredRowHeight
 {
+    if (self.enableCustomRowHeight && self.customRowHeight != FSCalendarAutomaticDimension) {
+        return self.customRowHeight;
+    }
+    
     if (_preferredRowHeight == FSCalendarAutomaticDimension) {
         CGFloat headerHeight = self.preferredHeaderHeight;
         CGFloat weekdayHeight = self.preferredWeekdayHeight;
