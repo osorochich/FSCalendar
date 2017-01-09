@@ -250,6 +250,8 @@
     
     if (_shapeLayer.opacity == shouldHideShapeLayer) {
         _shapeLayer.opacity = !shouldHideShapeLayer;
+        _shapeLayer.path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
+                                                    cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.2*self.borderRadius].CGPath;
     }
     if (!shouldHideShapeLayer) {
         
